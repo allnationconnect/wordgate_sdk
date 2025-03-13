@@ -1,9 +1,12 @@
-package wordgate_sdk_test
+package _test
 
 import (
 	"fmt"
 	"log"
 	"path/filepath"
+
+	"github.com/aliyun/alibaba-cloud-sdk-go/sdk"
+	"github.com/allnationconnect/"
 )
 
 // Example 展示了如何使用SDK执行基本的同步操作
@@ -14,13 +17,13 @@ func Example() {
 	configDir := filepath.Dir(absConfigPath)
 
 	// 加载配置
-	config, err := sdk.LoadConfig(absConfigPath)
+	config, err := wordgate_sdk.LoadConfig(absConfigPath)
 	if err != nil {
 		log.Fatalf("加载配置失败: %v", err)
 	}
 
 	// 创建客户端
-	client := sdk.NewClient(config, configDir)
+	client := wordgate_sdk.NewClient(config, configDir)
 
 	// 执行干运行查看将要同步的数据
 	dryRunResult, err := client.DryRun()
@@ -49,7 +52,7 @@ func Example() {
 // ExampleDryRun 展示如何执行干运行模式
 func ExampleClient_DryRun() {
 	// 创建客户端（实际使用时需要加载配置）
-	client := &sdk.Client{} // 简化示例，实际使用时应使用NewClient创建
+	client := &.Client{} // 简化示例，实际使用时应使用NewClient创建
 
 	// 执行干运行
 	result, err := client.DryRun()
@@ -71,7 +74,7 @@ func ExampleClient_DryRun() {
 // ExampleLoadConfig 展示如何加载配置文件
 func ExampleLoadConfig() {
 	// 加载配置文件
-	// config, err := sdk.LoadConfig("config.yaml")
+	// config, err := .LoadConfig("config.yaml")
 	//
 	// if err != nil {
 	//     log.Fatalf("加载配置失败: %v", err)
