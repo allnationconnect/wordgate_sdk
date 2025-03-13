@@ -1,12 +1,11 @@
-package _test
+package wordgate_sdk_test
 
 import (
 	"fmt"
 	"log"
 	"path/filepath"
 
-	"github.com/aliyun/alibaba-cloud-sdk-go/sdk"
-	"github.com/allnationconnect/"
+	"github.com/allnationconnect/wordgate_sdk"
 )
 
 // Example 展示了如何使用SDK执行基本的同步操作
