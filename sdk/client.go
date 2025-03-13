@@ -45,7 +45,7 @@ Configuration File Format:
 	        name: "产品名称"
 	        price: 9900
 
-详细使用说明和完整的API文档请参考 https://github.com/allnationconnect/wordgate
+详细使用说明和完整的API文档请参考 https://github.com/allnationconnect/wordgate_sdk
 */
 package sdk
 
