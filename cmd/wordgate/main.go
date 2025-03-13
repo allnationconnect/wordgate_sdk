@@ -7,7 +7,7 @@ import (
 	"os"
 	"path/filepath"
 
-	"github.com/allnationconnect/wordgate_sdk/sdk"
+	"github.com/allnationconnect/wordgate_sdk"
 )
 
 // 示例配置文件内容
@@ -157,13 +157,13 @@ func main() {
 		fmt.Printf("配置文件目录: %s\n", configDir)
 
 		// 使用SDK加载配置
-		config, err := sdk.LoadConfig(absConfigPath)
+		config, err := wordgate_sdk.LoadConfig(absConfigPath)
 		if err != nil {
 			log.Fatalf("加载配置失败: %v", err)
 		}
 
 		// 创建SDK客户端
-		client := sdk.NewClient(config, configDir)
+		client := wordgate_sdk.NewClient(config, configDir)
 
 		// 根据模式执行操作
 		if *dryRun {
@@ -225,7 +225,7 @@ func main() {
 }
 
 // printSyncResult 打印同步结果
-func printSyncResult(result *sdk.SyncAllResponse) {
+func printSyncResult(result *wordgate_sdk.SyncAllResponse) {
 	fmt.Println("\n== 同步结果 ==")
 	if !result.Success {
 		fmt.Printf("❌ 同步失败: %s\n", result.ErrorMessage)

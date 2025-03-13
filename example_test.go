@@ -1,4 +1,4 @@
-package sdk_test
+package wordgate_sdk_test
 
 import (
 	"fmt"

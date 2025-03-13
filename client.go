@@ -1,5 +1,5 @@
 /*
-Package sdk 提供了与Wordgate API进行交互的客户端工具包。
+package wordgate_sdk 提供了与Wordgate API进行交互的客户端工具包。
 
 该包可以用于同步产品信息、会员等级信息以及应用配置信息到Wordgate服务。
 它支持从配置文件加载配置，从Markdown文件中提取产品信息，以及直接在配置文件中定义产品。
@@ -47,7 +47,7 @@ Configuration File Format:
 
 详细使用说明和完整的API文档请参考 https://github.com/allnationconnect/wordgate_sdk
 */
-package sdk
+package wordgate_sdk
 
 import (
 	"bytes"

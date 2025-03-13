@@ -1,4 +1,4 @@
-package sdk
+package wordgate_sdk
 
 import (
 	"encoding/json"
