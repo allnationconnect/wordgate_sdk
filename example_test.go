@@ -4,8 +4,6 @@ import (
 	"fmt"
 	"log"
 	"path/filepath"
-
-	"github.com/allnationconnect/wordgate_sdk/sdk"
 )
 
 // Example 展示了如何使用SDK执行基本的同步操作

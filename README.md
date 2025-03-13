@@ -14,7 +14,7 @@ Wordgate 同步 SDK 是一个用于与Wordgate API进行交互的工具包，主
 ## 安装
 
 ```bash
-go get github.com/allnationconnect/wordgate_sdk/sdk
+go get github.com/allnationconnect/wordgate_sdk
 ```
 
 ## 使用示例
@@ -28,7 +28,7 @@ import (
     "fmt"
     "log"
     "path/filepath"
-    "github.com/allnationconnect/wordgate_sdk/sdk"
+    "github.com/allnationconnect/wordgate_sdk"
 )
 
 func main() {
