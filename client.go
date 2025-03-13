@@ -7,13 +7,13 @@ package wordgate_sdk 提供了与Wordgate API进行交互的客户端工具包�
 基本用法示例:
 
 	// 加载配置
-	config, err := sdk.LoadConfig("config.yaml")
+	config, err := wordgate_sdk.LoadConfig("config.yaml")
 	if err != nil {
 		log.Fatalf("加载配置失败: %v", err)
 	}
 
 	// 创建客户端
-	client := sdk.NewClient(config, "/path/to/config/dir")
+	client := wordgate_sdk.NewClient(config, "/path/to/config/dir")
 
 	// 执行同步
 	result, err := client.SyncAll()

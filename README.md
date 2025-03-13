@@ -38,13 +38,13 @@ func main() {
     configDir := filepath.Dir(absConfigPath)
     
     // 加载配置
-    config, err := sdk.LoadConfig(absConfigPath)
+    config, err := wordgate_sdk.LoadConfig(absConfigPath)
     if err != nil {
         log.Fatalf("加载配置失败: %v", err)
     }
 
     // 创建客户端
-    client := sdk.NewClient(config, configDir)
+    client := wordgate_sdk.NewClient(config, configDir)
 
     // 执行同步
     result, err := client.SyncAll()
@@ -98,12 +98,12 @@ fmt.Printf("新建产品: %d\n", productResult.Created)
 
 ```go
 // 创建订单
-orderRequest := &sdk.CreateOrderRequest{
-    Items: []sdk.OrderItem{
+orderRequest := &wordgate_sdk.CreateOrderRequest{
+    Items: []wordgate_sdk.OrderItem{
         {
             ItemCode: "COURSE001", // 产品代码
             Quantity: 1,
-            ItemType: sdk.ItemTypeProduct, // 商品类型：商品
+            ItemType: wordgate_sdk.ItemTypeProduct, // 商品类型：商品
         },
     },
     Email:       "user@example.com",
