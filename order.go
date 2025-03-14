@@ -104,7 +104,7 @@ type OrderResponse struct {
 // 返回订单详情和可能的错误
 func (c *Client) GetOrder(orderNo string) (*OrderDetailResponse, error) {
 	// 构建URL
-	path := fmt.Sprintf("/app/order?order_no=%s", orderNo)
+	path := fmt.Sprintf("/app/orders/%s", orderNo)
 
 	// 发送GET请求
 	resp, err := c.apiRequest("GET", path, nil)
@@ -143,7 +143,7 @@ func (c *Client) GetOrder(orderNo string) (*OrderDetailResponse, error) {
 // 返回创建的订单信息和可能的错误
 func (c *Client) CreateOrder(request *CreateOrderRequest) (*OrderResponse, error) {
 	// 发送POST请求
-	resp, err := c.apiPost("/app/order", request)
+	resp, err := c.apiPost("/app/orders/create", request)
 	if err != nil {
 		return nil, fmt.Errorf("创建订单失败: %w", err)
 	}
