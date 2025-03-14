@@ -194,8 +194,20 @@ type SecurityConfig struct {
 
 // PaymentConfig 支付配置
 type PaymentConfig struct {
+	// GatewayMode 网关模式配置
+	GatewayMode GatewayModeConfig `yaml:"gateway_mode" json:"gateway_mode"`
 	// Antom Antom支付配置
 	Antom AntomConfig `yaml:"antom" json:"antom"`
+}
+
+// GatewayModeConfig 网关模式配置
+type GatewayModeConfig struct {
+	// Enabled 是否启用网关模式
+	Enabled bool `yaml:"enabled" json:"enabled"`
+	// NotifyURL 通知URL
+	NotifyURL string `yaml:"notify_url" json:"notify_url"`
+	// RedirectURL 重定向URL
+	RedirectURL string `yaml:"redirect_url" json:"redirect_url"`
 }
 
 // AntomConfig Antom支付配置

@@ -18,6 +18,11 @@ type OrderItem struct {
 	ItemType string `json:"item_type,omitempty"`
 }
 
+type OrderCustomer struct {
+	Provider string `json:"provider"`
+	UID      string `json:"uid"`
+}
+
 // CreateOrderRequest 创建订单请求
 type CreateOrderRequest struct {
 	// Items 订单项列表
@@ -28,12 +33,8 @@ type CreateOrderRequest struct {
 	ClientIP string `json:"client_ip,omitempty"`
 	// AddressID 地址ID
 	AddressID uint `json:"address_id"`
-	// NotifyURL 支付通知URL
-	NotifyURL string `json:"notify_url"`
-	// RedirectURL 支付完成后的重定向URL
-	RedirectURL string `json:"redirect_url"`
-	// Email 用户邮箱
-	Email string `json:"email"`
+	// 客户信息
+	Customer OrderCustomer `json:"customer"`
 }
 
 // OrderItemInfo 订单项详细信息
