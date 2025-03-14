@@ -75,9 +75,9 @@ type SyncAllResponse struct {
 	// AppConfig 包含应用配置同步的结果
 	AppConfig AppConfigSyncResponse `json:"app_config"`
 	// Memberships 包含会员等级同步的结果
-	Memberships MembershipSyncResponse `json:"memberships"`
+	Memberships *MembershipSyncResponse `json:"memberships"`
 	// Products 包含产品同步的结果
-	Products ProductSyncResponse `json:"products"`
+	Products *ProductSyncResponse `json:"products"`
 	// ErrorMessage 当同步失败时的错误信息
 	ErrorMessage string `json:"error_message,omitempty"`
 }
@@ -149,11 +149,7 @@ func (c *Client) SyncAll() (*SyncAllResponse, error) {
 			result.ErrorMessage = fmt.Sprintf("同步会员等级失败: %v", err)
 			return result, err
 		}
-		result.Memberships = *membershipResp
-	} else {
-		// 如果不存在会员等级配置，则设置空响应
-		emptyResp := MembershipSyncResponse{}
-		result.Memberships = emptyResp
+		result.Memberships = membershipResp
 	}
 
 	// 3. 同步产品（可选项）
@@ -165,11 +161,7 @@ func (c *Client) SyncAll() (*SyncAllResponse, error) {
 			result.ErrorMessage = fmt.Sprintf("同步产品失败: %v", err)
 			return result, err
 		}
-		result.Products = *productResp
-	} else {
-		// 如果不存在产品配置，则设置空响应
-		emptyResp := ProductSyncResponse{}
-		result.Products = emptyResp
+		result.Products = productResp
 	}
 
 	return result, nil

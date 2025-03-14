@@ -206,13 +206,11 @@ func main() {
 				}
 			}
 		} else {
-			// 实际同步模式
-			fmt.Println("\n== 开始同步流程 ==")
 
 			// 使用SDK执行完整同步
 			result, err := client.SyncAll()
 			if err != nil {
-				log.Fatalf("同步失败: %v", err)
+				fmt.Printf("同步失败: %v", err)
 			}
 
 			// 打印同步结果
@@ -231,8 +229,6 @@ func printSyncResult(result *wordgate_sdk.SyncAllResponse) {
 		fmt.Printf("❌ 同步失败: %s\n", result.ErrorMessage)
 		return
 	}
-	fmt.Println("✅ 同步成功!")
-
 	// 1. 应用配置同步结果
 	fmt.Println("\n1. 应用配置:")
 	fmt.Printf("  名称: %s\n", result.AppConfig.Name)
@@ -241,42 +237,45 @@ func printSyncResult(result *wordgate_sdk.SyncAllResponse) {
 		fmt.Printf("  消息: %s\n", result.AppConfig.Message)
 	}
 
-	// 2. 会员等级同步结果
-	fmt.Println("\n2. 会员等级:")
-	fmt.Printf("  状态: %s\n", boolToSuccessString(result.Memberships.Success))
-	fmt.Printf("  总数: %d\n", result.Memberships.Total)
-	fmt.Printf("  创建: %d\n", result.Memberships.Created)
-	fmt.Printf("  更新: %d\n", result.Memberships.Updated)
-	fmt.Printf("  未变: %d\n", result.Memberships.Unchanged)
-	fmt.Printf("  失败: %d\n", result.Memberships.Failed)
+	if result.Memberships != nil {
+		// 2. 会员等级同步结果
+		fmt.Println("\n2. 会员等级:")
+		fmt.Printf("  状态: %s\n", boolToSuccessString(result.Memberships.Success))
+		fmt.Printf("  总数: %d\n", result.Memberships.Total)
+		fmt.Printf("  创建: %d\n", result.Memberships.Created)
+		fmt.Printf("  更新: %d\n", result.Memberships.Updated)
+		fmt.Printf("  未变: %d\n", result.Memberships.Unchanged)
+		fmt.Printf("  失败: %d\n", result.Memberships.Failed)
 
-	if len(result.Memberships.Errors) > 0 {
-		fmt.Println("  错误:")
-		for _, err := range result.Memberships.Errors {
-			fmt.Printf("    - [%s] %s: %s\n", err.Code, err.TierCode, err.Message)
+		if len(result.Memberships.Errors) > 0 {
+			fmt.Println("  错误:")
+			for _, err := range result.Memberships.Errors {
+				fmt.Printf("    - [%s] %s: %s\n", err.Code, err.TierCode, err.Message)
+			}
 		}
+	} else {
+		fmt.Printf("2. 无会员等级配置，跳过\n")
 	}
 
-	// 3. 产品同步结果
-	fmt.Println("\n3. 产品:")
-	fmt.Printf("  状态: %s\n", boolToSuccessString(result.Products.Success))
-	fmt.Printf("  总数: %d\n", result.Products.Total)
-	fmt.Printf("  创建: %d\n", result.Products.Created)
-	fmt.Printf("  更新: %d\n", result.Products.Updated)
-	fmt.Printf("  未变: %d\n", result.Products.Unchanged)
-	fmt.Printf("  失败: %d\n", result.Products.Failed)
+	if result.Products != nil {
+		// 3. 产品同步结果
+		fmt.Println("\n3. 产品:")
+		fmt.Printf("  状态: %s\n", boolToSuccessString(result.Products.Success))
+		fmt.Printf("  总数: %d\n", result.Products.Total)
+		fmt.Printf("  创建: %d\n", result.Products.Created)
+		fmt.Printf("  更新: %d\n", result.Products.Updated)
+		fmt.Printf("  未变: %d\n", result.Products.Unchanged)
+		fmt.Printf("  失败: %d\n", result.Products.Failed)
 
-	if len(result.Products.Errors) > 0 {
-		fmt.Println("  错误:")
-		for _, err := range result.Products.Errors {
-			fmt.Printf("    - [%s] %s: %s\n", err.Code, err.ProductCode, err.Message)
+		if len(result.Products.Errors) > 0 {
+			fmt.Println("  错误:")
+			for _, err := range result.Products.Errors {
+				fmt.Printf("    - [%s] %s: %s\n", err.Code, err.ProductCode, err.Message)
+			}
 		}
+	} else {
+		fmt.Printf("3. 无产品配置，跳过\n")
 	}
-
-	fmt.Println("\n== 同步流程完成 ==")
-	fmt.Println("✓ 应用配置同步成功")
-	fmt.Println("✓ 会员等级同步成功")
-	fmt.Println("✓ 产品同步成功")
 }
 
 // boolToSuccessString 将布尔值转换为成功/失败字符串
