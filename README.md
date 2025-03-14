@@ -103,13 +103,15 @@ orderRequest := &wordgate_sdk.CreateOrderRequest{
         {
             ItemCode: "COURSE001", // 产品代码
             Quantity: 1,
-            ItemType: wordgate_sdk.ItemTypeProduct, // 商品类型：商品
+            ItemType: "product", // 商品类型：商品
         },
     },
-    Email:       "user@example.com",
-    NotifyURL:   "https://example.com/notify",
-    RedirectURL: "https://example.com/redirect",
-    AddressID:   1,
+    CouponCode: "DISCOUNT10", // 优惠券代码（可选）
+    AddressID: 1,
+    Customer: wordgate_sdk.OrderCustomer{
+        Provider: "wechat",
+        UID: "wx_user_123456",
+    },
 }
 
 // 创建订单

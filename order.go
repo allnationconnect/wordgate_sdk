@@ -29,8 +29,7 @@ type CreateOrderRequest struct {
 	Items []OrderItem `json:"items"`
 	// CouponCode 优惠券代码（可选）
 	CouponCode string `json:"coupon_code,omitempty"`
-	// ClientIP 客户端IP（可选）
-	ClientIP string `json:"client_ip,omitempty"`
+
 	// AddressID 地址ID
 	AddressID uint `json:"address_id"`
 	// 客户信息
