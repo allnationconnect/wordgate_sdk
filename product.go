@@ -50,7 +50,7 @@ type ProductSyncResponse struct {
 //
 // 该方法会收集配置中定义的所有产品信息，并将其同步到服务器
 // 返回同步结果和可能的错误
-func (c *Client) SyncProducts() (*ProductSyncResponse, error) {
+func (c *Client) SyncProductsFromConfig() (*ProductSyncResponse, error) {
 	var allProducts []Product
 
 	// 1. 处理从文件中获取的产品
@@ -74,14 +74,14 @@ func (c *Client) SyncProducts() (*ProductSyncResponse, error) {
 	}
 
 	// 发送同步请求
-	return c.syncProductItems(allProducts)
+	return c.SyncProducts(allProducts)
 }
 
-// syncProductItems 同步指定的产品列表
+// SyncProduct 同步指定的产品列表
 //
 // products 参数包含要同步的产品列表
 // 返回同步结果和可能的错误
-func (c *Client) syncProductItems(products []Product) (*ProductSyncResponse, error) {
+func (c *Client) SyncProducts(products []Product) (*ProductSyncResponse, error) {
 	// 如果产品列表为空，返回错误
 	if len(products) == 0 {
 		return nil, fmt.Errorf("产品列表为空")
