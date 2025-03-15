@@ -27,132 +27,132 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-  deb-package:
-    needs: goreleaser
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v3
-        
-      - name: Set up Go
-        uses: actions/setup-go@v4
-        with:
-          go-version: '1.20'
-          
-      - name: Build binary
-        run: |
-          go build -o wordgate ./cmd/wordgate/main.go
-          
-      - name: Setup Debian package structure
-        run: |
-          VERSION=${GITHUB_REF#refs/tags/v}
-          mkdir -p deb/wordgate_${VERSION}/usr/local/bin
-          mkdir -p deb/wordgate_${VERSION}/DEBIAN
-          cp wordgate deb/wordgate_${VERSION}/usr/local/bin/
-          
-          cat > deb/wordgate_${VERSION}/DEBIAN/control << EOF
-          Package: wordgate
-          Version: ${VERSION}
-          Section: utils
-          Priority: optional
-          Architecture: amd64
-          Maintainer: WordGate Team <support@example.com>
-          Description: WordGate SDK CLI Tool
-           Command-line interface for WordGate SDK
-          EOF
-          
-          chmod 755 deb/wordgate_${VERSION}/DEBIAN/control
-          
-      - name: Build Debian package
-        run: |
-          VERSION=${GITHUB_REF#refs/tags/v}
-          dpkg-deb --build deb/wordgate_${VERSION}
-          
-      - name: Upload .deb as release asset
-        uses: softprops/action-gh-release@v1
-        with:
-          files: deb/wordgate_*.deb
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-  homebrew:
-    needs: goreleaser
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v3
-        
-      - name: Create Homebrew formula
-        run: |
-          VERSION=${GITHUB_REF#refs/tags/v}
-          REPO_OWNER=$(echo "$GITHUB_REPOSITORY" | cut -d '/' -f 1)
-          REPO_NAME=$(echo "$GITHUB_REPOSITORY" | cut -d '/' -f 2)
-          
-          mkdir -p HomebrewFormula
-          
-          cat > HomebrewFormula/wordgate.rb << EOF
-          class Wordgate < Formula
-            desc "WordGate SDK CLI Tool"
-            homepage "https://github.com/${GITHUB_REPOSITORY}"
-            version "${VERSION}"
-            
-            if OS.mac? && Hardware::CPU.intel?
-              url "https://github.com/${GITHUB_REPOSITORY}/releases/download/v${VERSION}/wordgate_${VERSION}_darwin_amd64.tar.gz"
-              sha256 "#{%x(curl -sL https://github.com/${GITHUB_REPOSITORY}/releases/download/v${VERSION}/wordgate_${VERSION}_checksums.txt | grep darwin_amd64.tar.gz | awk '{print $1}')}"
-            elsif OS.mac? && Hardware::CPU.arm?
-              url "https://github.com/${GITHUB_REPOSITORY}/releases/download/v${VERSION}/wordgate_${VERSION}_darwin_arm64.tar.gz"
-              sha256 "#{%x(curl -sL https://github.com/${GITHUB_REPOSITORY}/releases/download/v${VERSION}/wordgate_${VERSION}_checksums.txt | grep darwin_arm64.tar.gz | awk '{print $1}')}"
-            elsif OS.linux? && Hardware::CPU.intel?
-              url "https://github.com/${GITHUB_REPOSITORY}/releases/download/v${VERSION}/wordgate_${VERSION}_linux_amd64.tar.gz"
-              sha256 "#{%x(curl -sL https://github.com/${GITHUB_REPOSITORY}/releases/download/v${VERSION}/wordgate_${VERSION}_checksums.txt | grep linux_amd64.tar.gz | awk '{print $1}')}"
-            elsif OS.linux? && Hardware::CPU.arm?
-              url "https://github.com/${GITHUB_REPOSITORY}/releases/download/v${VERSION}/wordgate_${VERSION}_linux_arm64.tar.gz"
-              sha256 "#{%x(curl -sL https://github.com/${GITHUB_REPOSITORY}/releases/download/v${VERSION}/wordgate_${VERSION}_checksums.txt | grep linux_arm64.tar.gz | awk '{print $1}')}"
-            end
-            
-            def install
-              bin.install "wordgate"
-            end
-            
-            test do
-              system "#{bin}/wordgate", "--version"
-            end
-          end
-          EOF
-          
-      - name: Upload Homebrew formula
-        uses: softprops/action-gh-release@v1
-        with:
-          files: HomebrewFormula/wordgate.rb
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-  apt-repository:
-    needs: deb-package
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v3
-        with:
-          ref: apt-repository
-          
-      - name: Setup apt repository
-        run: |
-          VERSION=${GITHUB_REF#refs/tags/v}
-          mkdir -p apt-repo
-          
-          # Download the .deb package
-          curl -L https://github.com/${GITHUB_REPOSITORY}/releases/download/v${VERSION}/wordgate_${VERSION}_amd64.deb -o apt-repo/wordgate_${VERSION}_amd64.deb
-          
-          cd apt-repo
-          apt-ftparchive packages . > Packages
-          gzip -c Packages > Packages.gz
-          apt-ftparchive release . > Release
-          
-      - name: Commit and push apt repository
-        run: |
-          git config --global user.name "GitHub Actions"
-          git config --global user.email "actions@github.com"
-          git add apt-repo
-          git commit -m "Update APT repository for release ${GITHUB_REF#refs/tags/v}"
-          git push 
+#  deb-package:
+#    needs: goreleaser
+#    runs-on: ubuntu-latest
+#    steps:
+#      - name: Checkout
+#        uses: actions/checkout@v3
+#        
+#      - name: Set up Go
+#        uses: actions/setup-go@v4
+#        with:
+#          go-version: '1.20'
+#          
+#      - name: Build binary
+#        run: |
+#          go build -o wordgate ./cmd/wordgate/main.go
+#          
+#      - name: Setup Debian package structure
+#        run: |
+#          VERSION=${GITHUB_REF#refs/tags/v}
+#          mkdir -p deb/wordgate_${VERSION}/usr/local/bin
+#          mkdir -p deb/wordgate_${VERSION}/DEBIAN
+#          cp wordgate deb/wordgate_${VERSION}/usr/local/bin/
+#          
+#          cat > deb/wordgate_${VERSION}/DEBIAN/control << EOF
+#          Package: wordgate
+#          Version: ${VERSION}
+#          Section: utils
+#          Priority: optional
+#          Architecture: amd64
+#          Maintainer: WordGate Team <support@example.com>
+#          Description: WordGate SDK CLI Tool
+#           Command-line interface for WordGate SDK
+#          EOF
+#          
+#          chmod 755 deb/wordgate_${VERSION}/DEBIAN/control
+#          
+#      - name: Build Debian package
+#        run: |
+#          VERSION=${GITHUB_REF#refs/tags/v}
+#          dpkg-deb --build deb/wordgate_${VERSION}
+#          
+#      - name: Upload .deb as release asset
+#        uses: softprops/action-gh-release@v1
+#        with:
+#          files: deb/wordgate_*.deb
+#        env:
+#          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+#
+#  homebrew:
+#    needs: goreleaser
+#    runs-on: ubuntu-latest
+#    steps:
+#      - name: Checkout
+#        uses: actions/checkout@v3
+#        
+#      - name: Create Homebrew formula
+#        run: |
+#          VERSION=${GITHUB_REF#refs/tags/v}
+#          REPO_OWNER=$(echo "$GITHUB_REPOSITORY" | cut -d '/' -f 1)
+#          REPO_NAME=$(echo "$GITHUB_REPOSITORY" | cut -d '/' -f 2)
+#          
+#          mkdir -p HomebrewFormula
+#          
+#          cat > HomebrewFormula/wordgate.rb << EOF
+#          class Wordgate < Formula
+#            desc "WordGate SDK CLI Tool"
+#            homepage "https://github.com/${GITHUB_REPOSITORY}"
+#            version "${VERSION}"
+#            
+#            if OS.mac? && Hardware::CPU.intel?
+#              url "https://github.com/${GITHUB_REPOSITORY}/releases/download/v${VERSION}/wordgate_${VERSION}_darwin_amd64.tar.gz"
+#              sha256 "#{%x(curl -sL https://github.com/${GITHUB_REPOSITORY}/releases/download/v${VERSION}/wordgate_${VERSION}_checksums.txt | grep darwin_amd64.tar.gz | awk '{print $1}')}"
+#            elsif OS.mac? && Hardware::CPU.arm?
+#              url "https://github.com/${GITHUB_REPOSITORY}/releases/download/v${VERSION}/wordgate_${VERSION}_darwin_arm64.tar.gz"
+#              sha256 "#{%x(curl -sL https://github.com/${GITHUB_REPOSITORY}/releases/download/v${VERSION}/wordgate_${VERSION}_checksums.txt | grep darwin_arm64.tar.gz | awk '{print $1}')}"
+#            elsif OS.linux? && Hardware::CPU.intel?
+#              url "https://github.com/${GITHUB_REPOSITORY}/releases/download/v${VERSION}/wordgate_${VERSION}_linux_amd64.tar.gz"
+#              sha256 "#{%x(curl -sL https://github.com/${GITHUB_REPOSITORY}/releases/download/v${VERSION}/wordgate_${VERSION}_checksums.txt | grep linux_amd64.tar.gz | awk '{print $1}')}"
+#            elsif OS.linux? && Hardware::CPU.arm?
+#              url "https://github.com/${GITHUB_REPOSITORY}/releases/download/v${VERSION}/wordgate_${VERSION}_linux_arm64.tar.gz"
+#              sha256 "#{%x(curl -sL https://github.com/${GITHUB_REPOSITORY}/releases/download/v${VERSION}/wordgate_${VERSION}_checksums.txt | grep linux_arm64.tar.gz | awk '{print $1}')}"
+#            end
+#            
+#            def install
+#              bin.install "wordgate"
+#            end
+#            
+#            test do
+#              system "#{bin}/wordgate", "--version"
+#            end
+#          end
+#          EOF
+#          
+#      - name: Upload Homebrew formula
+#        uses: softprops/action-gh-release@v1
+#        with:
+#          files: HomebrewFormula/wordgate.rb
+#        env:
+#          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+#
+#  apt-repository:
+#    needs: deb-package
+#    runs-on: ubuntu-latest
+#    steps:
+#      - name: Checkout
+#        uses: actions/checkout@v3
+#        with:
+#          ref: apt-repository
+#          
+#      - name: Setup apt repository
+#        run: |
+#          VERSION=${GITHUB_REF#refs/tags/v}
+#          mkdir -p apt-repo
+#          
+#          # Download the .deb package
+#          curl -L https://github.com/${GITHUB_REPOSITORY}/releases/download/v${VERSION}/wordgate_${VERSION}_amd64.deb -o apt-repo/wordgate_${VERSION}_amd64.deb
+#          
+#          cd apt-repo
+#          apt-ftparchive packages . > Packages
+#          gzip -c Packages > Packages.gz
+#          apt-ftparchive release . > Release
+#          
+#      - name: Commit and push apt repository
+#        run: |
+#          git config --global user.name "GitHub Actions"
+#          git config --global user.email "actions@github.com"
+#          git add apt-repo
+#          git commit -m "Update APT repository for release ${GITHUB_REF#refs/tags/v}"
+#          git push 

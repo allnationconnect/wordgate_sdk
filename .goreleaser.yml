@@ -57,16 +57,16 @@ release:
   prerelease: auto
   draft: false
 
-brews:
-  - name: wordgate
-    tap:
-      owner: allnationconnect
-      name: homebrew-wordgate
-    folder: Formula
-    homepage: "https://github.com/allnationconnect/wordgate_sdk"
-    description: "WordGate SDK CLI Tool"
-    license: "MIT"
-    test: |
-      system "#{bin}/wordgate --version"
-    install: |
-      bin.install "wordgate" 
+# brews:
+#   - name: wordgate
+#     tap:
+#       owner: allnationconnect
+#       name: homebrew-wordgate
+#     folder: Formula
+#     homepage: "https://github.com/allnationconnect/wordgate_sdk"
+#     description: "WordGate SDK CLI Tool"
+#     license: "MIT"
+#     test: |
+#       system "#{bin}/wordgate --version"
+#     install: |
+#       bin.install "wordgate" 
