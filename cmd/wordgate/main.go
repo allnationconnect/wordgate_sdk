@@ -10,6 +10,13 @@ import (
 	"github.com/allnationconnect/wordgate_sdk"
 )
 
+// 版本信息，在构建时由GoReleaser设置
+var (
+	version = "dev"
+	commit  = "none"
+	date    = "unknown"
+)
+
 // 示例配置文件内容
 const demoConfig = `# Wordgate配置示例
 wordgate:
@@ -121,9 +128,18 @@ func main() {
 	dryRun := flag.Bool("dry-run", false, "只输出要同步的数据，不发送实际请求到服务器 (需要和-sync-config一起使用)")
 	printDemo := flag.Bool("print-demo", false, "打印样板配置文件")
 	help := flag.Bool("help", false, "显示帮助信息")
+	versionFlag := flag.Bool("version", false, "显示版本信息")
 
 	// 解析命令行参数
 	flag.Parse()
+
+	// 如果用户选择查看版本信息
+	if *versionFlag {
+		fmt.Printf("WordGate CLI 版本 %s\n", version)
+		fmt.Printf("提交: %s\n", commit)
+		fmt.Printf("构建日期: %s\n", date)
+		return
+	}
 
 	// 如果用户选择打印帮助信息，或者没有提供任何参数，显示帮助
 	if *help || (flag.NFlag() == 0 && len(flag.Args()) == 0) {
@@ -296,10 +312,12 @@ func printHelp() {
 	fmt.Println("  -dry-run            只显示要同步的数据，不发送实际请求到服务器 (需要与-sync-config一起使用)")
 	fmt.Println("  -print-demo         打印示例配置文件，可重定向到文件")
 	fmt.Println("  -help               显示此帮助信息")
+	fmt.Println("  -version            显示版本信息")
 	fmt.Println("\n示例:")
 	fmt.Println("  基本使用:             wordgate -sync-config=config.yaml")
 	fmt.Println("  干运行模式:           wordgate -sync-config=config.yaml -dry-run")
 	fmt.Println("  生成示例配置:         wordgate -print-demo > config.yaml")
+	fmt.Println("  查看版本:             wordgate -version")
 	fmt.Println("\n注意:")
 	fmt.Println("  -sync-config 参数指定要同步的配置文件路径")
 	fmt.Println("  -dry-run 参数必须与 -sync-config 参数一起使用")

@@ -13,8 +13,41 @@ Wordgate 同步 SDK 是一个用于与Wordgate API进行交互的工具包，主
 
 ## 安装
 
+### 使用预编译的二进制文件
+
+从[GitHub Releases](https://github.com/allnationconnect/wordgate_sdk/releases)页面下载最新版本的预编译二进制文件。
+
+### 在Mac上使用Homebrew安装
+
 ```bash
-go get github.com/allnationconnect/wordgate_sdk
+# 添加Homebrew tap
+brew tap allnationconnect/wordgate
+
+# 安装WordGate
+brew install wordgate
+```
+
+### 在Ubuntu/Debian上使用apt-get安装
+
+```bash
+# 添加WordGate APT仓库
+echo "deb [trusted=yes] https://raw.githubusercontent.com/allnationconnect/wordgate_sdk/apt-repository/apt-repo/ /" | sudo tee /etc/apt/sources.list.d/wordgate.list
+
+# 更新包列表
+sudo apt-get update
+
+# 安装WordGate
+sudo apt-get install wordgate
+```
+
+### 从源码构建
+
+要从源码构建，您需要安装Go 1.20或更高版本:
+
+```bash
+git clone https://github.com/allnationconnect/wordgate_sdk.git
+cd wordgate_sdk
+go build -o wordgate ./cmd/wordgate/main.go
 ```
 
 ## 使用示例
