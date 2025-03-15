@@ -155,7 +155,7 @@ func (c *Client) SyncAll() (*SyncAllResponse, error) {
 	// 3. 同步产品（可选项）
 	hasProducts := len(c.Config.Products.Items) > 0 || len(c.Config.Products.Files) > 0
 	if hasProducts {
-		productResp, err := c.SyncProducts()
+		productResp, err := c.SyncProductsFromConfig()
 		if err != nil {
 			result.Success = false
 			result.ErrorMessage = fmt.Sprintf("同步产品失败: %v", err)
